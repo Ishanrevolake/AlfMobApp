@@ -1,0 +1,1058 @@
+[
+  {
+    "id": "4-3-1-dumbbell-sumo-squat",
+    "name": "4-3-1 dumbbell sumo squat",
+    "category": "Legs",
+    "equipment": "Dumbbell"
+  },
+  {
+    "id": "4-3-1-sumo-squat",
+    "name": "4-3-1 sumo squat",
+    "category": "Legs",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "back-supported-overhead-ez-bar-tricep-extensions",
+    "name": "Back supported overhead EZ bar tricep extensions",
+    "category": "Arms",
+    "equipment": "EZ Bar"
+  },
+  {
+    "id": "back-supported-tricep-push-down",
+    "name": "Back supported tricep push down",
+    "category": "Arms",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "barbell-jm-press",
+    "name": "Barbell JM press",
+    "category": "Arms",
+    "equipment": "Barbell"
+  },
+  {
+    "id": "barbell-rdl",
+    "name": "Barbell RDL",
+    "category": "Legs",
+    "equipment": "Barbell"
+  },
+  {
+    "id": "barbell-back-squat",
+    "name": "Barbell back squat",
+    "category": "Legs",
+    "equipment": "Barbell"
+  },
+  {
+    "id": "barbell-hip-thrusts",
+    "name": "Barbell hip thrusts",
+    "category": "Glutes",
+    "equipment": "Barbell"
+  },
+  {
+    "id": "behind-the-back-barbell-wrist-curl",
+    "name": "Behind the back barbell wrist curl",
+    "category": "Arms",
+    "equipment": "Barbell"
+  },
+  {
+    "id": "bent-over-dumbbell-rows",
+    "name": "Bent over dumbbell rows",
+    "category": "Back",
+    "equipment": "Dumbbell"
+  },
+  {
+    "id": "bent-over-dumbbell-rows-wide-grip",
+    "name": "Bent over dumbbell rows wide grip",
+    "category": "Back",
+    "equipment": "Dumbbell"
+  },
+  {
+    "id": "bent-over-lateral-raises",
+    "name": "Bent over lateral raises",
+    "category": "Shoulders",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "box-squat",
+    "name": "Box squat",
+    "category": "Legs",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "bulgarian-split-squat",
+    "name": "Bulgarian split squat",
+    "category": "Legs",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "cable-curls",
+    "name": "Cable curls",
+    "category": "Arms",
+    "equipment": "Cable"
+  },
+  {
+    "id": "cable-kickbacks",
+    "name": "Cable kickbacks",
+    "category": "Mobility",
+    "equipment": "Cable"
+  },
+  {
+    "id": "calf-raise-machine",
+    "name": "Calf raise machine",
+    "category": "Legs",
+    "equipment": "Machine"
+  },
+  {
+    "id": "calf-raises",
+    "name": "Calf raises",
+    "category": "Legs",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "california-press",
+    "name": "California press",
+    "category": "Mobility",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "chest-supported-rear-delt-fly",
+    "name": "Chest supported rear delt fly",
+    "category": "Chest",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "chest-supported-wide-grip-rows",
+    "name": "Chest supported wide grip rows",
+    "category": "Back",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "close-grip-pull-down",
+    "name": "Close grip pull down",
+    "category": "Back",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "cross-mountain-climbers",
+    "name": "Cross mountain climbers",
+    "category": "Core",
+    "equipment": "Bodyweight"
+  },
+  {
+    "id": "cross-trainer-cardio",
+    "name": "Cross trainer cardio",
+    "category": "Cardio",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "crossbody-hammer-curls",
+    "name": "Crossbody hammer curls",
+    "category": "Arms",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "dead-hang",
+    "name": "Dead hang",
+    "category": "Back",
+    "equipment": "Bodyweight"
+  },
+  {
+    "id": "decline-reverse-crunch",
+    "name": "Decline reverse crunch",
+    "category": "Core",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "deficit-reverse-lunge-smith",
+    "name": "Deficit reverse lunge smith",
+    "category": "Legs",
+    "equipment": "Smith Machine"
+  },
+  {
+    "id": "deficit-smith-rdl",
+    "name": "Deficit smith RDL",
+    "category": "Legs",
+    "equipment": "Smith Machine"
+  },
+  {
+    "id": "dumbbell-rdl",
+    "name": "Dumbbell RDL",
+    "category": "Legs",
+    "equipment": "Dumbbell"
+  },
+  {
+    "id": "dumbbell-bicep-curls",
+    "name": "Dumbbell bicep curls",
+    "category": "Arms",
+    "equipment": "Dumbbell"
+  },
+  {
+    "id": "dumbbell-chest-flys",
+    "name": "Dumbbell chest flys",
+    "category": "Chest",
+    "equipment": "Dumbbell"
+  },
+  {
+    "id": "dumbbell-curls",
+    "name": "Dumbbell curls",
+    "category": "Arms",
+    "equipment": "Dumbbell"
+  },
+  {
+    "id": "dumbbell-floor-press",
+    "name": "Dumbbell floor press",
+    "category": "Chest",
+    "equipment": "Dumbbell"
+  },
+  {
+    "id": "dumbbell-good-mornings",
+    "name": "Dumbbell good mornings",
+    "category": "Legs",
+    "equipment": "Dumbbell"
+  },
+  {
+    "id": "dumbbell-hammer-curls",
+    "name": "Dumbbell hammer curls",
+    "category": "Arms",
+    "equipment": "Dumbbell"
+  },
+  {
+    "id": "dumbbell-hip-thrusts",
+    "name": "Dumbbell hip thrusts",
+    "category": "Glutes",
+    "equipment": "Dumbbell"
+  },
+  {
+    "id": "dumbbell-lateral-raises",
+    "name": "Dumbbell lateral raises",
+    "category": "Shoulders",
+    "equipment": "Dumbbell"
+  },
+  {
+    "id": "dumbbell-pull-over",
+    "name": "Dumbbell pull over",
+    "category": "Back",
+    "equipment": "Dumbbell"
+  },
+  {
+    "id": "dumbbell-shoulder-press",
+    "name": "Dumbbell shoulder press",
+    "category": "Shoulders",
+    "equipment": "Dumbbell"
+  },
+  {
+    "id": "dumbbell-shrugs",
+    "name": "Dumbbell shrugs",
+    "category": "Shoulders",
+    "equipment": "Dumbbell"
+  },
+  {
+    "id": "dumbbell-squats",
+    "name": "Dumbbell squats",
+    "category": "Legs",
+    "equipment": "Dumbbell"
+  },
+  {
+    "id": "dumbbell-upright-row",
+    "name": "Dumbbell upright row",
+    "category": "Back",
+    "equipment": "Dumbbell"
+  },
+  {
+    "id": "ez-bar-curls",
+    "name": "EZ bar curls",
+    "category": "Arms",
+    "equipment": "EZ Bar"
+  },
+  {
+    "id": "ez-bar-preacher-curl",
+    "name": "EZ bar preacher curl",
+    "category": "Arms",
+    "equipment": "EZ Bar"
+  },
+  {
+    "id": "feet-forward-smith-squat",
+    "name": "Feet forward smith squat",
+    "category": "Legs",
+    "equipment": "Smith Machine"
+  },
+  {
+    "id": "flat-dumbbell-bench-press",
+    "name": "Flat dumbbell bench press",
+    "category": "Chest",
+    "equipment": "Dumbbell"
+  },
+  {
+    "id": "fly-to-press-incline",
+    "name": "Fly to press incline",
+    "category": "Chest",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "glute-biased-smith-squat",
+    "name": "Glute biased smith squat",
+    "category": "Glutes",
+    "equipment": "Smith Machine"
+  },
+  {
+    "id": "glute-dominant-smith-squat",
+    "name": "Glute dominant smith squat",
+    "category": "Glutes",
+    "equipment": "Smith Machine"
+  },
+  {
+    "id": "glute-kick-back-machine",
+    "name": "Glute kick back machine",
+    "category": "Glutes",
+    "equipment": "Machine"
+  },
+  {
+    "id": "glute-kick-backs",
+    "name": "Glute kick backs",
+    "category": "Glutes",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "glute-step-ups",
+    "name": "Glute step ups",
+    "category": "Glutes",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "glute-ham-extension",
+    "name": "Glute-ham extension",
+    "category": "Glutes",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "hack-squat",
+    "name": "Hack squat",
+    "category": "Legs",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "ham-focused-back-extension",
+    "name": "Ham focused back extension",
+    "category": "Legs",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "ham-glute-back-extension",
+    "name": "Ham-glute back extension",
+    "category": "Glutes",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "hamstring-back-extensions",
+    "name": "Hamstring back extensions",
+    "category": "Legs",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "hanging-leg-raises",
+    "name": "Hanging leg raises",
+    "category": "Core",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "heel-elevated-smith-squat",
+    "name": "Heel elevated smith squat",
+    "category": "Legs",
+    "equipment": "Smith Machine"
+  },
+  {
+    "id": "high-incline-dumbbell-curls",
+    "name": "High incline dumbbell curls",
+    "category": "Arms",
+    "equipment": "Dumbbell"
+  },
+  {
+    "id": "hip-abduction",
+    "name": "Hip abduction",
+    "category": "Glutes",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "hollow-body-hold",
+    "name": "Hollow body hold",
+    "category": "Core",
+    "equipment": "Bodyweight"
+  },
+  {
+    "id": "incline-barbell-bench-press",
+    "name": "Incline barbell bench press",
+    "category": "Chest",
+    "equipment": "Barbell"
+  },
+  {
+    "id": "incline-bench-press",
+    "name": "Incline bench press",
+    "category": "Chest",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "incline-chest-press",
+    "name": "Incline chest press",
+    "category": "Chest",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "incline-dumbbell-bench-press",
+    "name": "Incline dumbbell bench press",
+    "category": "Chest",
+    "equipment": "Dumbbell"
+  },
+  {
+    "id": "incline-dumbbell-chest-flys",
+    "name": "Incline dumbbell chest flys",
+    "category": "Chest",
+    "equipment": "Dumbbell"
+  },
+  {
+    "id": "incline-dumbbell-curls",
+    "name": "Incline dumbbell curls",
+    "category": "Arms",
+    "equipment": "Dumbbell"
+  },
+  {
+    "id": "incline-leg-press",
+    "name": "Incline leg press",
+    "category": "Legs",
+    "equipment": "Leg Press"
+  },
+  {
+    "id": "incline-leg-press-calf-raises",
+    "name": "Incline leg press calf raises",
+    "category": "Legs",
+    "equipment": "Leg Press"
+  },
+  {
+    "id": "incline-leg-raises",
+    "name": "Incline leg raises",
+    "category": "Core",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "incline-machine-chest-press",
+    "name": "Incline machine chest press",
+    "category": "Chest",
+    "equipment": "Machine"
+  },
+  {
+    "id": "incline-narrow-grip-bench",
+    "name": "Incline narrow grip bench",
+    "category": "Back",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "incline-push-ups",
+    "name": "Incline push ups",
+    "category": "Chest",
+    "equipment": "Bodyweight"
+  },
+  {
+    "id": "incline-wide-grip-bench-press",
+    "name": "Incline wide grip bench press",
+    "category": "Chest",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "iso-lat-pull-down",
+    "name": "Iso lat pull down",
+    "category": "Back",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "jump-rope",
+    "name": "Jump rope",
+    "category": "Cardio",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "jumping-jacks",
+    "name": "Jumping jacks",
+    "category": "Cardio",
+    "equipment": "Bodyweight"
+  },
+  {
+    "id": "kettle-bell-swings",
+    "name": "Kettle bell swings",
+    "category": "Cardio",
+    "equipment": "Kettlebell"
+  },
+  {
+    "id": "knee-raises",
+    "name": "Knee raises",
+    "category": "Core",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "lean-in-hip-abduction",
+    "name": "Lean in hip abduction",
+    "category": "Glutes",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "lean-in-lateral-raises",
+    "name": "Lean in lateral raises",
+    "category": "Shoulders",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "leg-curls",
+    "name": "Leg curls",
+    "category": "Arms",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "leg-extensions",
+    "name": "Leg extensions",
+    "category": "Legs",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "leg-press-calf-raises",
+    "name": "Leg press calf raises",
+    "category": "Legs",
+    "equipment": "Leg Press"
+  },
+  {
+    "id": "leg-press-quad-focus",
+    "name": "Leg press quad focus",
+    "category": "Legs",
+    "equipment": "Leg Press"
+  },
+  {
+    "id": "low-incline-dumbbell-bench-press",
+    "name": "Low incline dumbbell bench press",
+    "category": "Chest",
+    "equipment": "Dumbbell"
+  },
+  {
+    "id": "low-to-high-cable-chest-flys",
+    "name": "Low to high cable chest flys",
+    "category": "Chest",
+    "equipment": "Cable"
+  },
+  {
+    "id": "lying-cable-tricep-extension",
+    "name": "Lying cable tricep extension",
+    "category": "Arms",
+    "equipment": "Cable"
+  },
+  {
+    "id": "lying-down-ez-bar-tricep-extension",
+    "name": "Lying down EZ bar tricep extension",
+    "category": "Arms",
+    "equipment": "EZ Bar"
+  },
+  {
+    "id": "lying-down-cable-tricep-extension",
+    "name": "Lying down cable tricep extension",
+    "category": "Arms",
+    "equipment": "Cable"
+  },
+  {
+    "id": "lying-down-dumbbell-tricep-extension",
+    "name": "Lying down dumbbell tricep extension",
+    "category": "Arms",
+    "equipment": "Dumbbell"
+  },
+  {
+    "id": "lying-dumbbell-tricep-extensions",
+    "name": "Lying dumbbell tricep extensions",
+    "category": "Arms",
+    "equipment": "Dumbbell"
+  },
+  {
+    "id": "lying-leg-curls",
+    "name": "Lying leg curls",
+    "category": "Arms",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "machine-rdl",
+    "name": "Machine RDL",
+    "category": "Legs",
+    "equipment": "Machine"
+  },
+  {
+    "id": "machine-ab-crunches",
+    "name": "Machine ab crunches",
+    "category": "Core",
+    "equipment": "Machine"
+  },
+  {
+    "id": "machine-bicep-curls",
+    "name": "Machine bicep curls",
+    "category": "Arms",
+    "equipment": "Machine"
+  },
+  {
+    "id": "machine-chest-flys",
+    "name": "Machine chest flys",
+    "category": "Chest",
+    "equipment": "Machine"
+  },
+  {
+    "id": "machine-chest-press",
+    "name": "Machine chest press",
+    "category": "Chest",
+    "equipment": "Machine"
+  },
+  {
+    "id": "machine-hip-thrusts",
+    "name": "Machine hip thrusts",
+    "category": "Glutes",
+    "equipment": "Machine"
+  },
+  {
+    "id": "machine-lateral-raises",
+    "name": "Machine lateral raises",
+    "category": "Shoulders",
+    "equipment": "Machine"
+  },
+  {
+    "id": "machine-shoulder-press",
+    "name": "Machine shoulder press",
+    "category": "Shoulders",
+    "equipment": "Machine"
+  },
+  {
+    "id": "middle-cable-chest-flys",
+    "name": "Middle cable chest flys",
+    "category": "Chest",
+    "equipment": "Cable"
+  },
+  {
+    "id": "middle-chest-flys",
+    "name": "Middle chest flys",
+    "category": "Chest",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "mountain-climbers",
+    "name": "Mountain climbers",
+    "category": "Core",
+    "equipment": "Bodyweight"
+  },
+  {
+    "id": "narrow-grip-bench-press",
+    "name": "Narrow grip bench press",
+    "category": "Back",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "narrow-grip-machine-chest-press",
+    "name": "Narrow grip machine chest press",
+    "category": "Back",
+    "equipment": "Machine"
+  },
+  {
+    "id": "narrow-grip-push-ups",
+    "name": "Narrow grip push ups",
+    "category": "Back",
+    "equipment": "Bodyweight"
+  },
+  {
+    "id": "neutral-grip-lat-pull-down",
+    "name": "Neutral grip lat pull down",
+    "category": "Back",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "no-push-up-burpee",
+    "name": "No push up burpee",
+    "category": "Core",
+    "equipment": "Bodyweight"
+  },
+  {
+    "id": "overhead-cable-tricep-extensions",
+    "name": "Overhead cable tricep extensions",
+    "category": "Arms",
+    "equipment": "Cable"
+  },
+  {
+    "id": "overhead-tricep-extension",
+    "name": "Overhead tricep extension",
+    "category": "Arms",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "pec-dec-machine-chest-fly",
+    "name": "Pec dec machine chest fly",
+    "category": "Chest",
+    "equipment": "Machine"
+  },
+  {
+    "id": "plate-pinches",
+    "name": "Plate pinches",
+    "category": "Mobility",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "pronated-lat-pull-down",
+    "name": "Pronated lat pull down",
+    "category": "Back",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "pull-up",
+    "name": "Pull up",
+    "category": "Back",
+    "equipment": "Bodyweight"
+  },
+  {
+    "id": "pull-ups-weighted",
+    "name": "Pull ups weighted",
+    "category": "Back",
+    "equipment": "Bodyweight"
+  },
+  {
+    "id": "push-ups",
+    "name": "Push ups",
+    "category": "Chest",
+    "equipment": "Bodyweight"
+  },
+  {
+    "id": "reverse-crunches",
+    "name": "Reverse crunches",
+    "category": "Core",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "reverse-lunges",
+    "name": "Reverse lunges",
+    "category": "Legs",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "scap-pulls",
+    "name": "Scap pulls",
+    "category": "Back",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "seated-barbell-shoulder-press",
+    "name": "Seated barbell shoulder press",
+    "category": "Shoulders",
+    "equipment": "Barbell"
+  },
+  {
+    "id": "seated-barbell-wrist-curls",
+    "name": "Seated barbell wrist curls",
+    "category": "Arms",
+    "equipment": "Barbell"
+  },
+  {
+    "id": "seated-calf-raises",
+    "name": "Seated calf raises",
+    "category": "Legs",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "seated-chest-flys",
+    "name": "Seated chest flys",
+    "category": "Chest",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "seated-dumbbell-curl",
+    "name": "Seated dumbbell curl",
+    "category": "Arms",
+    "equipment": "Dumbbell"
+  },
+  {
+    "id": "seated-dumbbell-hammer-curls",
+    "name": "Seated dumbbell hammer curls",
+    "category": "Arms",
+    "equipment": "Dumbbell"
+  },
+  {
+    "id": "seated-dumbbell-lateral-raises",
+    "name": "Seated dumbbell lateral raises",
+    "category": "Shoulders",
+    "equipment": "Dumbbell"
+  },
+  {
+    "id": "seated-dumbbell-shoulder-press",
+    "name": "Seated dumbbell shoulder press",
+    "category": "Shoulders",
+    "equipment": "Dumbbell"
+  },
+  {
+    "id": "seated-incline-lateral-raises",
+    "name": "Seated incline lateral raises",
+    "category": "Shoulders",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "seated-lateral-raises",
+    "name": "Seated lateral raises",
+    "category": "Shoulders",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "seated-leg-curls",
+    "name": "Seated leg curls",
+    "category": "Arms",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "seated-machine-shoulder-press",
+    "name": "Seated machine shoulder press",
+    "category": "Shoulders",
+    "equipment": "Machine"
+  },
+  {
+    "id": "seated-overhead-ez-bar-tricep-extension",
+    "name": "Seated overhead EZ bar tricep extension",
+    "category": "Arms",
+    "equipment": "EZ Bar"
+  },
+  {
+    "id": "seated-wide-grip-row",
+    "name": "Seated wide grip row",
+    "category": "Back",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "single-arm-dumbbell-preacher-curl",
+    "name": "Single arm dumbbell preacher curl",
+    "category": "Arms",
+    "equipment": "Dumbbell"
+  },
+  {
+    "id": "single-arm-dumbbell-rows",
+    "name": "Single arm dumbbell rows",
+    "category": "Back",
+    "equipment": "Dumbbell"
+  },
+  {
+    "id": "single-arm-dumbbell-wrist-curl",
+    "name": "Single arm dumbbell wrist curl",
+    "category": "Arms",
+    "equipment": "Dumbbell"
+  },
+  {
+    "id": "single-arm-overhead-tricep-extension",
+    "name": "Single arm overhead tricep extension",
+    "category": "Arms",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "single-leg-barbell-hip-thrust",
+    "name": "Single leg barbell hip thrust",
+    "category": "Glutes",
+    "equipment": "Barbell"
+  },
+  {
+    "id": "single-leg-dumbbell-calf-raises",
+    "name": "Single leg dumbbell calf raises",
+    "category": "Legs",
+    "equipment": "Dumbbell"
+  },
+  {
+    "id": "smith-rdl",
+    "name": "Smith RDL",
+    "category": "Legs",
+    "equipment": "Smith Machine"
+  },
+  {
+    "id": "smith-deficit-reverse-lunge",
+    "name": "Smith deficit reverse lunge",
+    "category": "Legs",
+    "equipment": "Smith Machine"
+  },
+  {
+    "id": "smith-good-mornings",
+    "name": "Smith good mornings",
+    "category": "Legs",
+    "equipment": "Smith Machine"
+  },
+  {
+    "id": "smith-hip-thrusts",
+    "name": "Smith hip thrusts",
+    "category": "Glutes",
+    "equipment": "Smith Machine"
+  },
+  {
+    "id": "smith-machine-hip-thrusts",
+    "name": "Smith machine hip thrusts",
+    "category": "Glutes",
+    "equipment": "Smith Machine"
+  },
+  {
+    "id": "smith-reverse-lunge-deficit",
+    "name": "Smith reverse lunge deficit",
+    "category": "Legs",
+    "equipment": "Smith Machine"
+  },
+  {
+    "id": "smith-shrugs",
+    "name": "Smith shrugs",
+    "category": "Shoulders",
+    "equipment": "Smith Machine"
+  },
+  {
+    "id": "smith-wide-grip-shrugs",
+    "name": "Smith wide grip shrugs",
+    "category": "Shoulders",
+    "equipment": "Smith Machine"
+  },
+  {
+    "id": "standing-barbell-wrist-curl",
+    "name": "Standing barbell wrist curl",
+    "category": "Arms",
+    "equipment": "Barbell"
+  },
+  {
+    "id": "standing-calf-raises",
+    "name": "Standing calf raises",
+    "category": "Legs",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "standing-dumbbell-wrist-curl",
+    "name": "Standing dumbbell wrist curl",
+    "category": "Arms",
+    "equipment": "Dumbbell"
+  },
+  {
+    "id": "standing-lateral-raises",
+    "name": "Standing lateral raises",
+    "category": "Shoulders",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "standing-leg-curls",
+    "name": "Standing leg curls",
+    "category": "Arms",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "stiff-legged-good-mornings",
+    "name": "Stiff legged good mornings",
+    "category": "Legs",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "straight-arm-plank",
+    "name": "Straight arm plank",
+    "category": "Core",
+    "equipment": "Bodyweight"
+  },
+  {
+    "id": "straight-bar-curls",
+    "name": "Straight bar curls",
+    "category": "Arms",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "sumo-deficit-squats",
+    "name": "Sumo deficit squats",
+    "category": "Legs",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "sumo-leg-press",
+    "name": "Sumo leg press",
+    "category": "Legs",
+    "equipment": "Leg Press"
+  },
+  {
+    "id": "sumo-smith-squat",
+    "name": "Sumo smith squat",
+    "category": "Legs",
+    "equipment": "Smith Machine"
+  },
+  {
+    "id": "supinated-grip-lat-pull-down",
+    "name": "Supinated grip lat pull down",
+    "category": "Back",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "supinated-lat-pull-down",
+    "name": "Supinated lat pull down",
+    "category": "Back",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "supinated-pull-down",
+    "name": "Supinated pull down",
+    "category": "Back",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "tricep-dips",
+    "name": "Tricep dips",
+    "category": "Arms",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "tricep-push-down",
+    "name": "Tricep push down",
+    "category": "Arms",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "tricep-push-down-rope",
+    "name": "Tricep push down rope",
+    "category": "Arms",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "unilateral-rear-delt-fly",
+    "name": "Unilateral rear delt fly",
+    "category": "Chest",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "v-squats",
+    "name": "V squats",
+    "category": "Legs",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "walkout-to-plank",
+    "name": "Walkout to plank",
+    "category": "Core",
+    "equipment": "Bodyweight"
+  },
+  {
+    "id": "weighted-cable-crunch",
+    "name": "Weighted cable crunch",
+    "category": "Core",
+    "equipment": "Cable"
+  },
+  {
+    "id": "wide-grip-t-bar-row-chest-supported",
+    "name": "Wide grip T-bar row chest supported",
+    "category": "Back",
+    "equipment": "T-Bar"
+  },
+  {
+    "id": "wide-grip-lat-pull-down",
+    "name": "Wide grip lat pull down",
+    "category": "Back",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "wide-grip-push-ups",
+    "name": "Wide grip push ups",
+    "category": "Chest",
+    "equipment": "Bodyweight"
+  },
+  {
+    "id": "wide-grip-rows",
+    "name": "Wide grip rows",
+    "category": "Back",
+    "equipment": "Free Weight"
+  },
+  {
+    "id": "wide-grip-smith-shrugs",
+    "name": "Wide grip smith shrugs",
+    "category": "Shoulders",
+    "equipment": "Smith Machine"
+  }
+]
