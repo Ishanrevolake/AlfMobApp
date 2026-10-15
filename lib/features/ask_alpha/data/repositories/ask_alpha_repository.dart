@@ -33,6 +33,20 @@ class AskAlphaRepository {
     return response.map((data) => AskAlphaThread.fromJson(data)).toList();
   }
 
+  Future<AskAlphaThread> createClientConversation(String userId) async {
+    final data = await _supabase
+        .from('ask_alpha_threads')
+        .insert({
+          'user_id': userId,
+          'subject': 'Message Alpha',
+          'status': 'open',
+          'updated_at': DateTime.now().toIso8601String(),
+        })
+        .select()
+        .single();
+    return AskAlphaThread.fromJson(data);
+  }
+
   Future<void> submitOrder({
     required String userId,
     required String pack,
@@ -80,7 +94,7 @@ class AskAlphaRepository {
           'order_id': order.id,
           'user_id': userId,
           'subject': question.length > 72
-              ? '${question.substring(0, 72)}…'
+              ? '${question.substring(0, 72)}â€¦'
               : question,
           'status': 'open',
           'updated_at': DateTime.now().toIso8601String(),

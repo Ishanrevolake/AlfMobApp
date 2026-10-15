@@ -4,7 +4,8 @@ import 'package:go_router/go_router.dart';
 
 import '../features/ask_alpha/data/models/ask_alpha_models.dart';
 import '../features/ask_alpha/presentation/screens/ask_question_screen.dart';
-import '../features/ask_alpha/presentation/screens/client_ask_alpha_screen.dart';
+import '../features/ask_alpha/presentation/screens/client_messages_screen.dart';
+import '../features/dashboard/presentation/screens/client_calendar_screen.dart';
 import '../features/ask_alpha/presentation/screens/client_thread_screen.dart';
 import '../features/auth/presentation/controllers/auth_controller.dart';
 import '../features/auth/presentation/screens/login_screen.dart';
@@ -57,8 +58,8 @@ final routerProvider = Provider<GoRouter>((ref) {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: '/client/ask-alpha',
-                builder: (_, __) => const ClientAskAlphaScreen(),
+                path: '/client/messages',
+                builder: (_, __) => const ClientMessagesScreen(),
               ),
             ],
           ),
@@ -66,7 +67,9 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: '/client/meals',
-                builder: (_, __) => const ClientMealsScreen(),
+                builder: (_, state) => ClientMealsScreen(
+                  initialDay: state.uri.queryParameters['day'],
+                ),
               ),
             ],
           ),
@@ -79,6 +82,23 @@ final routerProvider = Provider<GoRouter>((ref) {
             ],
           ),
         ],
+      ),
+      GoRoute(
+        path: '/client/calendar',
+        builder: (_, __) => const ClientCalendarScreen(),
+      ),
+      GoRoute(
+        path: '/client/ask-alpha',
+        redirect: (_, __) => '/client/messages',
+      ),
+      GoRoute(
+        path: '/client/messages/thread/:id',
+        builder: (_, state) => ClientThreadScreen(
+          threadId: state.pathParameters['id']!,
+          thread: state.extra is AskAlphaThread
+              ? state.extra! as AskAlphaThread
+              : null,
+        ),
       ),
       GoRoute(
         path: '/client/session/:day',

@@ -25,3 +25,13 @@ String shortPlanDay(String value) {
   final full = fullPlanDay(value);
   return weekDays.contains(full) ? full.substring(0, 3).toUpperCase() : full;
 }
+
+/// Seven-day training blocks counted from the assigned programme start date.
+int trainingWeek(DateTime start, DateTime date) {
+  final elapsed = DateTime.utc(
+    date.year,
+    date.month,
+    date.day,
+  ).difference(DateTime.utc(start.year, start.month, start.day)).inDays;
+  return elapsed < 0 ? 1 : elapsed ~/ 7 + 1;
+}

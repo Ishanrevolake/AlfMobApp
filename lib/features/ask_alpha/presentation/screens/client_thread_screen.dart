@@ -28,7 +28,7 @@ class _ClientThreadScreenState extends ConsumerState<ClientThreadScreen> {
     final repository = ref.watch(askAlphaRepositoryProvider);
     return Scaffold(
       appBar: AppBar(
-        title: Text((widget.thread?.subject ?? 'ASK ALPHA').toUpperCase()),
+        title: Text((widget.thread?.subject ?? 'MESSAGES').toUpperCase()),
       ),
       body: Column(
         children: [

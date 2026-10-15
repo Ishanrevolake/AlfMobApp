@@ -3,10 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../shared/plan_days.dart';
 import '../controllers/meal_controller.dart';
+import '../widgets/meal_details.dart';
 import 'package:intl/intl.dart';
 
 class ClientMealsScreen extends ConsumerStatefulWidget {
-  const ClientMealsScreen({super.key});
+  final String? initialDay;
+  const ClientMealsScreen({super.key, this.initialDay});
 
   @override
   ConsumerState<ClientMealsScreen> createState() => _ClientMealsScreenState();
@@ -37,7 +39,9 @@ class _ClientMealsScreenState extends ConsumerState<ClientMealsScreen> {
           }
 
           final dayIndex = plan.days.indexWhere(
-            (d) => d.dayOfWeek == (selectedDay ?? currentDayStr),
+            (d) =>
+                shortPlanDay(d.dayOfWeek) ==
+                (selectedDay ?? widget.initialDay ?? currentDayStr),
           );
           final day = dayIndex != -1 ? plan.days[dayIndex] : null;
 
@@ -55,7 +59,9 @@ class _ClientMealsScreenState extends ConsumerState<ClientMealsScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  fullPlanDay(selectedDay ?? currentDayStr),
+                  fullPlanDay(
+                    selectedDay ?? widget.initialDay ?? currentDayStr,
+                  ),
                   style: const TextStyle(
                     color: AppColors.mutedText,
                     fontFamily: 'AppSans',
@@ -162,7 +168,7 @@ class _ClientMealsScreenState extends ConsumerState<ClientMealsScreen> {
                         label: Text(name.substring(0, 3)),
                         selected:
                             shortPlanDay(name) ==
-                            (selectedDay ?? currentDayStr),
+                            (selectedDay ?? widget.initialDay ?? currentDayStr),
                         onSelected: logging
                             ? null
                             : (_) => setState(
@@ -179,24 +185,7 @@ class _ClientMealsScreenState extends ConsumerState<ClientMealsScreen> {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 10),
                     child: InkWell(
-                      onTap: logging
-                          ? null
-                          : () async {
-                              setState(() => logging = true);
-                              try {
-                                await ref
-                                    .read(mealControllerProvider.notifier)
-                                    .toggleMealStatus(dayIndex, index);
-                              } catch (e) {
-                                if (context.mounted) {
-                                  ScaffoldMessenger.of(
-                                    context,
-                                  ).showSnackBar(SnackBar(content: Text('$e')));
-                                }
-                              } finally {
-                                if (mounted) setState(() => logging = false);
-                              }
-                            },
+                      onTap: () => openMealDetails(context, meal),
                       child: Container(
                         padding: const EdgeInsets.all(14),
                         decoration: BoxDecoration(
@@ -266,28 +255,30 @@ class _ClientMealsScreenState extends ConsumerState<ClientMealsScreen> {
                                 ],
                               ),
                             ),
-                            Container(
-                              width: 22,
-                              height: 22,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(7),
-                                border: Border.all(
-                                  color: meal.eaten
-                                      ? AppColors.primaryRed
-                                      : AppColors.strongBorder,
-                                  width: 1.4,
-                                ),
-                                color: meal.eaten
-                                    ? AppColors.primaryRed
-                                    : Colors.transparent,
-                              ),
-                              child: meal.eaten
-                                  ? const Icon(
-                                      Icons.check,
-                                      size: 12,
-                                      color: AppColors.darkTextOverRed,
-                                    )
-                                  : null,
+                            Checkbox(
+                              value: meal.eaten,
+                              onChanged: logging
+                                  ? null
+                                  : (_) async {
+                                      setState(() => logging = true);
+                                      try {
+                                        await ref
+                                            .read(
+                                              mealControllerProvider.notifier,
+                                            )
+                                            .toggleMealStatus(dayIndex, index);
+                                      } catch (error) {
+                                        if (context.mounted)
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            SnackBar(content: Text('$error')),
+                                          );
+                                      } finally {
+                                        if (mounted)
+                                          setState(() => logging = false);
+                                      }
+                                    },
                             ),
                           ],
                         ),

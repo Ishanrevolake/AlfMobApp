@@ -28,9 +28,9 @@ class ClientAppShell extends StatelessWidget {
           label: 'TRAIN',
         ),
         NavigationDestination(
-          icon: Badge(smallSize: 7, child: Icon(Icons.forum_outlined)),
-          selectedIcon: Badge(smallSize: 7, child: Icon(Icons.forum)),
-          label: 'ASK ALPHA',
+          icon: Icon(Icons.forum_outlined),
+          selectedIcon: Icon(Icons.forum),
+          label: 'MESSAGES',
         ),
         NavigationDestination(
           icon: Icon(Icons.restaurant_outlined),
