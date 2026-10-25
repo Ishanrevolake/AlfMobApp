@@ -267,6 +267,19 @@ class _ClientMealsScreenState extends ConsumerState<ClientMealsScreen> {
                                               mealControllerProvider.notifier,
                                             )
                                             .toggleMealStatus(dayIndex, index);
+                                        if (context.mounted) {
+                                          ScaffoldMessenger.of(context)
+                                            ..hideCurrentSnackBar()
+                                            ..showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  meal.eaten
+                                                      ? 'Unmarked'
+                                                      : 'Meal logged',
+                                                ),
+                                              ),
+                                            );
+                                        }
                                       } catch (error) {
                                         if (context.mounted)
                                           ScaffoldMessenger.of(

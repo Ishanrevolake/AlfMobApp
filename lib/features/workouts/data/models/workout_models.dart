@@ -27,6 +27,10 @@ abstract class WorkoutPlan with _$WorkoutPlan {
 abstract class WorkoutDay with _$WorkoutDay {
   const WorkoutDay._();
 
+  /// Day-specific guidance stored alongside the day's exercises in Supabase.
+  String get trainerNotes =>
+      (source['notes'] ?? source['trainer_notes'] ?? '').toString();
+
   const factory WorkoutDay({
     required String dayOfWeek, // 'MON', 'TUE', etc.
     required String title,

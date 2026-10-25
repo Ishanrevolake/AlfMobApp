@@ -128,12 +128,20 @@ void main() {
             meals ? 'Chicken and rice bowl' : 'Dumbbell bench press',
           );
           await tester.ensureVisible(title);
-          await tester.tap(title);
+          await tester.tap(meals ? find.byType(Checkbox).first : title);
           await tester.pumpAndSettle();
-          expect(find.byIcon(Icons.check), findsWidgets);
+          if (meals) {
+            expect(
+              tester.widget<Checkbox>(find.byType(Checkbox).first).value,
+              isTrue,
+            );
+          } else {
+            expect(find.byIcon(Icons.check), findsWidgets);
+          }
           expect(find.textContaining('PostgrestException'), findsNothing);
           expect(tester.takeException(), isNull);
           if (!meals) {
+            await tester.ensureVisible(find.byIcon(Icons.info_outline));
             await tester.tap(find.byIcon(Icons.info_outline));
             await tester.pumpAndSettle();
             expect(find.textContaining('90 seconds'), findsOneWidget);

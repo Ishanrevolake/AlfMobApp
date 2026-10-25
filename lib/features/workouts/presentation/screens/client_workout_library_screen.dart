@@ -27,9 +27,7 @@ class ClientWorkoutLibraryScreen extends ConsumerWidget {
               AlfPageTitle(
                 eyebrow: value?.focus ?? 'YOUR PROGRAMME',
                 title: 'My programme',
-                subtitle: value?.trainerNotes.isNotEmpty == true
-                    ? value!.trainerNotes
-                    : 'Your complete plan from your coach.',
+                subtitle: 'Your complete plan from your coach.',
               ),
               const SizedBox(height: 24),
               if (value == null || value.days.isEmpty)
@@ -47,11 +45,8 @@ class ClientWorkoutLibraryScreen extends ConsumerWidget {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 10),
                     child: InkWell(
-                      onTap: day.rest
-                          ? null
-                          : () => context.push(
-                              '/client/session/${day.dayOfWeek}',
-                            ),
+                      onTap: () =>
+                          context.push('/client/session/${day.dayOfWeek}'),
                       borderRadius: BorderRadius.circular(18),
                       child: Opacity(
                         opacity: day.rest ? .62 : 1,
@@ -98,6 +93,16 @@ class ClientWorkoutLibraryScreen extends ConsumerWidget {
                                         context,
                                       ).textTheme.labelSmall,
                                     ),
+                                    if (day.trainerNotes.trim().isNotEmpty) ...[
+                                      const SizedBox(height: 8),
+                                      Text(
+                                        'Session notes',
+                                        style: Theme.of(
+                                          context,
+                                        ).textTheme.labelSmall,
+                                      ),
+                                      Text(day.trainerNotes),
+                                    ],
                                   ],
                                 ),
                               ),

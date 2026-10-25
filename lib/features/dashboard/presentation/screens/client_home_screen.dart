@@ -13,36 +13,18 @@ import '../../../meal_plans/presentation/widgets/home_meal_grid.dart';
 import '../../../workouts/data/models/workout_models.dart';
 import '../../../workouts/presentation/controllers/workout_controller.dart';
 
-class ClientHomeScreen extends ConsumerStatefulWidget {
+class ClientHomeScreen extends ConsumerWidget {
   const ClientHomeScreen({super.key});
 
   @override
-  ConsumerState<ClientHomeScreen> createState() => _ClientHomeScreenState();
-}
-
-class _ClientHomeScreenState extends ConsumerState<ClientHomeScreen> {
-  DateTime selectedDate = DateUtils.dateOnly(DateTime.now());
-
-  Future<void> _selectDate() async {
-    final date = await showDatePicker(
-      context: context,
-      initialDate: selectedDate,
-      firstDate: DateTime(DateTime.now().year - 1),
-      lastDate: DateTime(DateTime.now().year + 5, 12, 31),
-    );
-    if (date != null && mounted) {
-      setState(() => selectedDate = date);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedDate = DateUtils.dateOnly(DateTime.now());
     final workout = ref.watch(workoutControllerProvider);
     final meals = ref.watch(mealControllerProvider);
     final profile = ref.watch(profileControllerProvider);
     final now = selectedDate;
     final isToday = DateUtils.isSameDay(selectedDate, DateTime.now());
-    final dayCode = DateFormat('EEE').format(now).toUpperCase();
+    final dayCode = shortPlanDay(weekDays[now.weekday - 1]);
     final name = profile.value?.profile?.fullName.split(' ').first ?? 'Athlete';
     final plan = workout.value;
     final today =
@@ -60,7 +42,7 @@ class _ClientHomeScreenState extends ConsumerState<ClientHomeScreen> {
         actions: [
           IconButton(
             tooltip: 'Calendar',
-            onPressed: _selectDate,
+            onPressed: () => context.push('/client/calendar'),
             icon: const Icon(Icons.calendar_month_outlined),
           ),
           const SizedBox(width: 8),
@@ -90,6 +72,24 @@ class _ClientHomeScreenState extends ConsumerState<ClientHomeScreen> {
               style: Theme.of(
                 context,
               ).textTheme.labelSmall?.copyWith(letterSpacing: 2),
+            ),
+            const SizedBox(height: 26),
+            Text(
+              "THIS WEEK'S PROGRAMME",
+              style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                letterSpacing: 3,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            const SizedBox(height: 18),
+            WeeklyProgrammeStrip(
+              days:
+                  plan == null ||
+                      selectedDate.isBefore(DateUtils.dateOnly(plan.startDate))
+                  ? []
+                  : plan.days,
+              selectedDay: dayCode,
+              onOpen: (day) => context.push('/client/session/${day.dayOfWeek}'),
             ),
             const SizedBox(height: 26),
             workout.when(
@@ -165,11 +165,19 @@ class _ClientHomeScreenState extends ConsumerState<ClientHomeScreen> {
                             '${exercise.name} \u00b7 ${exercise.sets} sets \u00b7 ${exercise.reps} reps',
                           ),
                         ),
+                    if (today?.trainerNotes.trim().isNotEmpty == true) ...[
+                      const SizedBox(height: 12),
+                      Text(
+                        'Session notes',
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
+                      Text(today!.trainerNotes),
+                    ],
                     const SizedBox(height: 18),
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: today == null || today.rest
+                        onPressed: today == null
                             ? null
                             : () => context.push(
                                 '/client/session/${today.dayOfWeek}',
@@ -190,20 +198,6 @@ class _ClientHomeScreenState extends ConsumerState<ClientHomeScreen> {
                 child: Center(child: CircularProgressIndicator()),
               ),
               error: (error, _) => AlfAsyncError(error: error),
-            ),
-            const SizedBox(height: 26),
-            Text(
-              "THIS WEEK'S PROGRAMME",
-              style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                letterSpacing: 3,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            const SizedBox(height: 18),
-            WeeklyProgrammeStrip(
-              days: plan?.days ?? [],
-              selectedDay: dayCode,
-              onOpen: (day) => context.push('/client/session/${day.dayOfWeek}'),
             ),
             const SizedBox(height: 26),
             AlfSectionHeader(

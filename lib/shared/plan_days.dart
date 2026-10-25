@@ -8,6 +8,13 @@ const weekDays = [
   'Sunday',
 ];
 
+/// The next Monday, including [date] itself when it is a Monday.
+DateTime nextPlanMonday(DateTime date) => DateTime(
+  date.year,
+  date.month,
+  date.day + (DateTime.monday - date.weekday + 7) % 7,
+);
+
 String fullPlanDay(String value) {
   final label = value.trim();
   for (var i = 0; i < weekDays.length; i++) {

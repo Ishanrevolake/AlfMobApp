@@ -66,7 +66,7 @@ class WeeklyProgrammeStrip extends StatelessWidget {
               ),
               clipBehavior: Clip.antiAlias,
               child: InkWell(
-                onTap: scheduled ? () => onOpen(day) : null,
+                onTap: day != null ? () => onOpen(day) : null,
                 child: SizedBox(
                   width: 64,
                   child: Column(

@@ -9,6 +9,7 @@ import 'package:alfalee_app/features/trainer/presentation/trainer_plan_editor.da
 import 'package:alfalee_app/features/trainer/presentation/plan_forms.dart';
 import 'package:alfalee_app/features/workouts/data/models/workout_models.dart';
 import 'package:alfalee_app/features/workouts/data/repositories/workout_repository.dart';
+import 'package:alfalee_app/shared/plan_days.dart';
 
 class FakeWorkouts extends WorkoutRepository {
   FakeWorkouts()
@@ -53,6 +54,66 @@ class FakeMeals extends MealRepository {
 }
 
 void main() {
+  testWidgets('New workout plans default to the next Monday', (tester) async {
+    final repo = FakeWorkouts();
+    final expected = nextPlanMonday(
+      DateTime.now(),
+    ).toIso8601String().split('T').first;
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [workoutRepositoryProvider.overrideWithValue(repo)],
+        child: const MaterialApp(
+          home: TrainerPlanEditor(clientId: 'client', meals: false),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.textContaining('Starts $expected'), findsOneWidget);
+  });
+
+  testWidgets(
+    'Workout start picker allows Mondays and preserves legacy dates on cancel',
+    (tester) async {
+      final repo = FakeWorkouts();
+      repo.saved = WorkoutPlan.fromJson(
+        WorkoutRepository.normalizePlan({
+          'client_id': 'client',
+          'start_date': '2026-10-22',
+          'focus': 'Strength',
+          'days': [],
+        }),
+      );
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [workoutRepositoryProvider.overrideWithValue(repo)],
+          child: const MaterialApp(
+            home: TrainerPlanEditor(clientId: 'client', meals: false),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Strength'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.widgetWithText(FilledButton, 'Save'));
+      await tester.pumpAndSettle();
+      final picker = tester.widget<DatePickerDialog>(
+        find.byType(DatePickerDialog),
+      );
+      expect(picker.initialDate, DateTime(2026, 10, 26));
+      for (var day = 19; day <= 25; day++) {
+        final date = DateTime(2026, 10, day);
+        expect(
+          picker.selectableDayPredicate!(date),
+          date.weekday == DateTime.monday,
+        );
+      }
+      await tester.tap(find.text('Cancel'));
+      await tester.pumpAndSettle();
+      expect(find.textContaining('Starts 2026-10-22'), findsOneWidget);
+      expect(repo.writes, 0);
+    },
+  );
+
   testWidgets(
     'Exercise dialog retries a failed publish without duplicating the assignment',
     (tester) async {

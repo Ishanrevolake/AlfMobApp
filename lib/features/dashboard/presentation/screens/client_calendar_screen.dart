@@ -6,6 +6,7 @@ import '../../../../shared/plan_days.dart';
 import '../../../../shared/widgets/alf_widgets.dart';
 import '../../../workouts/presentation/controllers/workout_controller.dart';
 import '../../../meal_plans/presentation/controllers/meal_controller.dart';
+import '../../../meal_plans/presentation/widgets/meal_details.dart';
 
 class ClientCalendarScreen extends ConsumerStatefulWidget {
   const ClientCalendarScreen({super.key});
@@ -19,7 +20,7 @@ class _CalendarState extends ConsumerState<ClientCalendarScreen> {
   Widget build(BuildContext context) {
     final workout = ref.watch(workoutControllerProvider);
     final meals = ref.watch(mealControllerProvider);
-    final code = DateFormat('EEE').format(selected).toUpperCase();
+    final code = shortPlanDay(weekDays[selected.weekday - 1]);
     final plan = workout.value;
     final mealPlan = meals.value;
     final day =
@@ -61,6 +62,16 @@ class _CalendarState extends ConsumerState<ClientCalendarScreen> {
                   if (day != null) ...[
                     const SizedBox(height: 8),
                     Text(day.rest ? 'Recovery day' : day.meta),
+                    const SizedBox(height: 12),
+                    Text(
+                      'Session notes',
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
+                    Text(
+                      day.trainerNotes.trim().isEmpty
+                          ? 'No notes from your trainer for this day yet.'
+                          : day.trainerNotes,
+                    ),
                     for (final exercise in day.exercises)
                       Padding(
                         padding: const EdgeInsets.only(top: 8),
@@ -68,12 +79,11 @@ class _CalendarState extends ConsumerState<ClientCalendarScreen> {
                           '${exercise.name} \u00b7 ${exercise.sets} sets \u00b7 ${exercise.reps} reps',
                         ),
                       ),
-                    if (!day.rest)
-                      TextButton(
-                        onPressed: () =>
-                            context.push('/client/session/${day.dayOfWeek}'),
-                        child: const Text('VIEW WORKOUT'),
-                      ),
+                    TextButton(
+                      onPressed: () =>
+                          context.push('/client/session/${day.dayOfWeek}'),
+                      child: const Text('VIEW WORKOUT'),
+                    ),
                   ],
                 ],
               ),
@@ -92,6 +102,7 @@ class _CalendarState extends ConsumerState<ClientCalendarScreen> {
                     const Text('No meals scheduled.'),
                   for (final meal in mealDay?.meals ?? [])
                     ListTile(
+                      onTap: () => openMealDetails(context, meal),
                       contentPadding: EdgeInsets.zero,
                       title: Text(meal.name),
                       subtitle: Text(

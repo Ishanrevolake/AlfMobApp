@@ -8,6 +8,61 @@ import 'package:alfalee_app/shared/plan_days.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  test('Plan start defaults to the next Monday across calendar boundaries', () {
+    expect(nextPlanMonday(DateTime(2026, 10, 19, 15)), DateTime(2026, 10, 19));
+    expect(nextPlanMonday(DateTime(2026, 10, 22)), DateTime(2026, 10, 26));
+    expect(nextPlanMonday(DateTime(2026, 10, 25)), DateTime(2026, 10, 26));
+    expect(nextPlanMonday(DateTime(2026, 12, 31)), DateTime(2027, 1, 4));
+    for (var offset = 0; offset < 7; offset++) {
+      final start = nextPlanMonday(DateTime(2026, 10, 19 + offset));
+      expect(start.weekday, DateTime.monday);
+      expect(trainingWeek(start, start.add(const Duration(days: 6))), 1);
+      expect(trainingWeek(start, start.add(const Duration(days: 7))), 2);
+    }
+  });
+  test('Workout day notes stay with their day when exercises change', () {
+    final plan = WorkoutPlan.fromJson(
+      WorkoutRepository.normalizePlan({
+        'client_id': 'client',
+        'days': [
+          {
+            'day': 'Monday',
+            'notes': 'Keep the session light.',
+            'exercises': [
+              {'name': 'Squat', 'sets': '3', 'reps': '10'},
+            ],
+          },
+          {'day': 'Tuesday', 'notes': 'Recovery walk.', 'rest': true},
+          {'day': 'Wednesday'},
+        ],
+      }),
+    );
+    expect(plan.days[0].trainerNotes, 'Keep the session light.');
+    expect(plan.days[1].trainerNotes, 'Recovery walk.');
+    expect(plan.days[2].trainerNotes, isEmpty);
+    final updated = plan.copyWith(
+      days: [
+        plan.days[0].copyWith(
+          exercises: [plan.days[0].exercises.single.copyWith(done: true)],
+        ),
+        ...plan.days.skip(1),
+      ],
+    );
+    final reloaded = WorkoutPlan.fromJson(
+      WorkoutRepository.normalizePlan(WorkoutRepository.toDatabase(updated)),
+    );
+    expect(reloaded.days[0].trainerNotes, 'Keep the session light.');
+    expect(reloaded.days[0].exercises.single.done, isTrue);
+    expect(reloaded.days[1].trainerNotes, 'Recovery walk.');
+    final clearedDay = reloaded.days[0].copyWith(
+      source: {
+        ...reloaded.days[0].source,
+        'trainer_notes': 'Legacy note',
+        'notes': '',
+      },
+    );
+    expect(clearedDay.trainerNotes, isEmpty);
+  });
   test(
     'Meal round trip keeps web weekdays, identifiers, foods and fractional nutrition',
     () {

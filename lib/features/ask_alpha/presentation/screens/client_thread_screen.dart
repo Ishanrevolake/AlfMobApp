@@ -5,6 +5,7 @@ import '../../../../app/theme/app_colors.dart';
 import '../../data/models/ask_alpha_models.dart';
 import '../../data/repositories/ask_alpha_repository.dart';
 import '../../../auth/presentation/controllers/auth_controller.dart';
+import '../controllers/message_unread_controller.dart';
 
 class ClientThreadScreen extends ConsumerStatefulWidget {
   final String threadId;
@@ -17,6 +18,7 @@ class ClientThreadScreen extends ConsumerStatefulWidget {
 class _ClientThreadScreenState extends ConsumerState<ClientThreadScreen> {
   final message = TextEditingController();
   bool sending = false;
+  String? lastReadMessage;
   @override
   void dispose() {
     message.dispose();
@@ -36,11 +38,44 @@ class _ClientThreadScreenState extends ConsumerState<ClientThreadScreen> {
             child: StreamBuilder<List<AskAlphaMessage>>(
               stream: repository.messagesStream(widget.threadId),
               builder: (context, snapshot) {
-                if (!snapshot.hasData)
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text('Unable to load messages: ${snapshot.error}'),
+                  );
+                }
+                if (!snapshot.hasData) {
                   return const Center(child: CircularProgressIndicator());
+                }
                 final items = snapshot.data!;
-                if (items.isEmpty)
+                final incoming = items.where(
+                  (item) => item.senderRole != 'client',
+                );
+                if (incoming.isNotEmpty &&
+                    lastReadMessage != incoming.last.id) {
+                  final latestId = incoming.last.id;
+                  WidgetsBinding.instance.addPostFrameCallback((_) async {
+                    if (!mounted || ModalRoute.of(context)?.isCurrent != true) {
+                      return;
+                    }
+                    final userId = ref.read(currentUserProvider)?.id;
+                    if (userId == null) return;
+                    try {
+                      await markTrainerMessagesRead(
+                        userId,
+                        widget.threadId,
+                        items,
+                      );
+                      if (!mounted) return;
+                      lastReadMessage = latestId;
+                      ref.invalidate(unreadTrainerMessagesProvider);
+                    } catch (_) {
+                      // Keep the unread indicator if local read status cannot be saved.
+                    }
+                  });
+                }
+                if (items.isEmpty) {
                   return const Center(child: Text('No messages yet.'));
+                }
                 return ListView.builder(
                   padding: const EdgeInsets.all(20),
                   itemCount: items.length,
@@ -124,10 +159,11 @@ class _ClientThreadScreenState extends ConsumerState<ClientThreadScreen> {
           );
       message.clear();
     } catch (error) {
-      if (mounted)
+      if (mounted) {
         ScaffoldMessenger.of(
           context,
         ).showSnackBar(SnackBar(content: Text(error.toString())));
+      }
     } finally {
       if (mounted) setState(() => sending = false);
     }

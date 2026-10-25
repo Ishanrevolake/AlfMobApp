@@ -263,6 +263,16 @@ class _TrainerClientDetailScreenState
                                 ),
                             ],
                           ),
+                          const SizedBox(height: 12),
+                          Text(
+                            'Session notes',
+                            style: Theme.of(context).textTheme.titleSmall,
+                          ),
+                          Text(
+                            day.trainerNotes.trim().isEmpty
+                                ? 'No notes for this day yet.'
+                                : day.trainerNotes,
+                          ),
                           if (day.exercises.isNotEmpty) ...[
                             const SizedBox(height: 12),
                             ...day.exercises.map(

@@ -42,14 +42,18 @@ class ClientWorkoutSessionScreen extends ConsumerWidget {
 
           final day = plan.days[dayIndex];
           if (day.rest) {
-            return const Center(
-              child: Text(
-                'REST DAY',
-                style: TextStyle(
-                  color: AppColors.mutedText,
-                  fontFamily: 'AppSans',
+            return ListView(
+              padding: const EdgeInsets.all(20),
+              children: [
+                const Text(
+                  'REST DAY',
+                  style: TextStyle(
+                    color: AppColors.mutedText,
+                    fontFamily: 'AppSans',
+                  ),
                 ),
-              ),
+                _dayNotes(context, day.trainerNotes),
+              ],
             );
           }
 
@@ -58,171 +62,160 @@ class ClientWorkoutSessionScreen extends ConsumerWidget {
           final pct = total > 0 ? doneCount / total : 0.0;
           final allDone = total > 0 && doneCount == total;
 
-          return Padding(
+          return ListView(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const SizedBox(height: 16),
-                Text(
-                  day.title.toUpperCase(),
-                  style: Theme.of(context).textTheme.displayMedium,
+            children: [
+              const SizedBox(height: 16),
+              Text(
+                day.title.toUpperCase(),
+                style: Theme.of(context).textTheme.displayMedium,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                '$total ${total == 1 ? 'exercise' : 'exercises'}',
+                style: const TextStyle(
+                  fontFamily: 'AppSans',
+                  fontSize: 12,
+                  color: AppColors.mutedText,
                 ),
-                const SizedBox(height: 8),
-                Text(
-                  '$total ${total == 1 ? 'exercise' : 'exercises'}',
-                  style: const TextStyle(
-                    fontFamily: 'AppSans',
-                    fontSize: 12,
-                    color: AppColors.mutedText,
+              ),
+              const SizedBox(height: 16),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(3),
+                child: LinearProgressIndicator(
+                  value: pct,
+                  minHeight: 5,
+                  backgroundColor: AppColors.primaryPanel,
+                  valueColor: const AlwaysStoppedAnimation<Color>(
+                    AppColors.primaryRed,
                   ),
                 ),
-                const SizedBox(height: 16),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(3),
-                  child: LinearProgressIndicator(
-                    value: pct,
-                    minHeight: 5,
-                    backgroundColor: AppColors.primaryPanel,
-                    valueColor: const AlwaysStoppedAnimation<Color>(
-                      AppColors.primaryRed,
+              ),
+              const SizedBox(height: 8),
+              const Text('Check-offs are saved on this device for this week.'),
+              const SizedBox(height: 24),
+              _dayNotes(context, day.trainerNotes),
+              ...List.generate(day.exercises.length, (exerciseIndex) {
+                final exercise = day.exercises[exerciseIndex];
+                return InkWell(
+                  onTap: () async {
+                    try {
+                      await ref
+                          .read(workoutControllerProvider.notifier)
+                          .toggleExerciseStatus(dayIndex, exerciseIndex);
+                    } catch (error) {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(
+                          context,
+                        ).showSnackBar(SnackBar(content: Text('$error')));
+                      }
+                    }
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 13),
+                    decoration: const BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(color: AppColors.subtleBorder),
+                      ),
                     ),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                const Text(
-                  'Check-offs are saved on this device for this week.',
-                ),
-                const SizedBox(height: 24),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: day.exercises.length,
-                    itemBuilder: (context, index) {
-                      final exercise = day.exercises[index];
-                      return InkWell(
-                        onTap: () async {
-                          try {
-                            await ref
-                                .read(workoutControllerProvider.notifier)
-                                .toggleExerciseStatus(dayIndex, index);
-                          } catch (error) {
-                            if (context.mounted) {
-                              ScaffoldMessenger.of(
-                                context,
-                              ).showSnackBar(SnackBar(content: Text('$error')));
-                            }
-                          }
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 13),
-                          decoration: const BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(color: AppColors.subtleBorder),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 24,
+                          height: 24,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: exercise.done
+                                  ? AppColors.primaryRed
+                                  : AppColors.strongBorder,
+                              width: 1.5,
                             ),
+                            color: exercise.done
+                                ? AppColors.primaryRed
+                                : Colors.transparent,
                           ),
-                          child: Row(
+                          child: exercise.done
+                              ? const Icon(
+                                  Icons.check,
+                                  size: 14,
+                                  color: AppColors.darkTextOverRed,
+                                )
+                              : null,
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Container(
-                                width: 24,
-                                height: 24,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: exercise.done
-                                        ? AppColors.primaryRed
-                                        : AppColors.strongBorder,
-                                    width: 1.5,
-                                  ),
+                              Text(
+                                exercise.name,
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
                                   color: exercise.done
-                                      ? AppColors.primaryRed
-                                      : Colors.transparent,
-                                ),
-                                child: exercise.done
-                                    ? const Icon(
-                                        Icons.check,
-                                        size: 14,
-                                        color: AppColors.darkTextOverRed,
-                                      )
-                                    : null,
-                              ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      exercise.name,
-                                      style: TextStyle(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w600,
-                                        color: exercise.done
-                                            ? AppColors.mutedText
-                                            : AppColors.primaryText,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 3),
-                                    Text(
-                                      '${exercise.sets} sets × ${exercise.reps}',
-                                      style: const TextStyle(
-                                        fontFamily: 'AppSans',
-                                        fontSize: 12,
-                                        color: AppColors.faintText,
-                                      ),
-                                    ),
-                                  ],
+                                      ? AppColors.mutedText
+                                      : AppColors.primaryText,
                                 ),
                               ),
-                              IconButton(
-                                tooltip: 'View exercise details',
-                                icon: const Icon(
-                                  Icons.info_outline,
-                                  size: 16,
+                              const SizedBox(height: 3),
+                              Text(
+                                '${exercise.sets} sets × ${exercise.reps}',
+                                style: const TextStyle(
+                                  fontFamily: 'AppSans',
+                                  fontSize: 12,
                                   color: AppColors.faintText,
                                 ),
-                                onPressed: () {
-                                  showExerciseDetails(context, exercise);
-                                },
                               ),
                             ],
                           ),
                         ),
-                      );
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 24.0),
-                  child: ElevatedButton(
-                    onPressed: allDone
-                        ? () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Session completed!'),
-                              ),
-                            );
-                            context.pop();
-                          }
-                        : null,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: allDone
-                          ? AppColors.primaryRed
-                          : Colors.transparent,
-                      foregroundColor: allDone
-                          ? AppColors.darkTextOverRed
-                          : AppColors.primaryText,
-                      side: allDone
-                          ? BorderSide.none
-                          : const BorderSide(color: AppColors.strongBorder),
-                    ),
-                    child: Text(
-                      allDone
-                          ? 'FINISH SESSION'
-                          : '$doneCount/$total EXERCISES CHECKED OFF',
+                        IconButton(
+                          tooltip: 'View exercise details',
+                          icon: const Icon(
+                            Icons.info_outline,
+                            size: 16,
+                            color: AppColors.faintText,
+                          ),
+                          onPressed: () {
+                            showExerciseDetails(context, exercise);
+                          },
+                        ),
+                      ],
                     ),
                   ),
+                );
+              }),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 24.0),
+                child: ElevatedButton(
+                  onPressed: allDone
+                      ? () {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Session completed!')),
+                          );
+                          context.pop();
+                        }
+                      : null,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: allDone
+                        ? AppColors.primaryRed
+                        : Colors.transparent,
+                    foregroundColor: allDone
+                        ? AppColors.darkTextOverRed
+                        : AppColors.primaryText,
+                    side: allDone
+                        ? BorderSide.none
+                        : const BorderSide(color: AppColors.strongBorder),
+                  ),
+                  child: Text(
+                    allDone
+                        ? 'FINISH SESSION'
+                        : '$doneCount/$total EXERCISES CHECKED OFF',
+                  ),
                 ),
-              ],
-            ),
+              ),
+            ],
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
@@ -230,4 +223,26 @@ class ClientWorkoutSessionScreen extends ConsumerWidget {
       ),
     );
   }
+
+  Widget _dayNotes(BuildContext context, String notes) => Card(
+    margin: const EdgeInsets.only(bottom: 16, top: 8),
+    child: Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Trainer notes for this day',
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            notes.trim().isEmpty
+                ? 'No notes from your trainer for this day yet.'
+                : notes,
+          ),
+        ],
+      ),
+    ),
+  );
 }

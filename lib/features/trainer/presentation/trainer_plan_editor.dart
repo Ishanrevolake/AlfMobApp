@@ -61,7 +61,13 @@ class _TrainerPlanEditorState extends ConsumerState<TrainerPlanEditor> {
               'focus': widget.meals
                   ? 'Custom nutrition plan'
                   : 'Custom workout plan',
-              'start_date': DateTime.now().toIso8601String().split('T').first,
+              'start_date':
+                  (widget.meals
+                          ? DateTime.now()
+                          : nextPlanMonday(DateTime.now()))
+                      .toIso8601String()
+                      .split('T')
+                      .first,
               'trainer_notes': '',
               'assigned_program_id': 'custom-workout-plan',
               'days': <PlanRecord>[],
@@ -242,6 +248,21 @@ class _TrainerPlanEditorState extends ConsumerState<TrainerPlanEditor> {
                           icon: const Icon(Icons.delete_outline),
                         ),
                       ),
+                    if (!widget.meals)
+                      Card(
+                        child: ListTile(
+                          title: const Text('Notes for this day'),
+                          subtitle: Text(
+                            '${days[selected]['notes'] ?? days[selected]['trainer_notes'] ?? ''}'
+                                    .trim()
+                                    .isEmpty
+                                ? 'Add guidance visible to the client for this workout day.'
+                                : '${days[selected]['notes'] ?? days[selected]['trainer_notes']}',
+                          ),
+                          trailing: const Icon(Icons.edit_note),
+                          onTap: _editDayNotes,
+                        ),
+                      ),
                     Wrap(
                       spacing: 8,
                       children: [
@@ -343,12 +364,30 @@ class _TrainerPlanEditorState extends ConsumerState<TrainerPlanEditor> {
       });
     }
     if (values == null || !mounted) return;
+    final currentStart =
+        DateTime.tryParse('${plan!['start_date']}') ?? DateTime.now();
+    final firstDate = DateTime(2000);
+    final lastDate = DateTime(2100);
+    final boundedStart = currentStart.isBefore(firstDate)
+        ? firstDate
+        : currentStart.isAfter(lastDate)
+        ? lastDate
+        : currentStart;
+    var initialDate = widget.meals
+        ? boundedStart
+        : nextPlanMonday(boundedStart);
+    if (initialDate.isAfter(lastDate)) {
+      initialDate = initialDate.subtract(const Duration(days: 7));
+    }
     final date = await showDatePicker(
       context: context,
-      initialDate:
-          DateTime.tryParse('${plan!['start_date']}') ?? DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
+      initialDate: initialDate,
+      firstDate: firstDate,
+      lastDate: lastDate,
+      helpText: widget.meals ? null : 'Choose a Monday to start the plan',
+      selectableDayPredicate: widget.meals
+          ? null
+          : (date) => date.weekday == DateTime.monday,
     );
     if (date != null && mounted) {
       change(
@@ -397,6 +436,19 @@ class _TrainerPlanEditorState extends ConsumerState<TrainerPlanEditor> {
         day['title'] = value['title'];
         day['rest'] = value['type'] == 'Rest';
       });
+    }
+  }
+
+  Future<void> _editDayNotes() async {
+    final day = days[selected];
+    final values = await editPlanFields(
+      context,
+      '${day['day']} - Notes',
+      {'notes': day['notes'] ?? day['trainer_notes'] ?? ''},
+      const [PlanField('notes', 'Trainer notes for this day', lines: 5)],
+    );
+    if (values != null && mounted) {
+      change(() => day['notes'] = '${values['notes'] ?? ''}'.trim());
     }
   }
 

@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../ask_alpha/presentation/controllers/message_unread_controller.dart';
 
 import '../../../app/theme/app_colors.dart';
 
-class ClientAppShell extends StatelessWidget {
+class ClientAppShell extends ConsumerWidget {
   final StatefulNavigationShell navigationShell;
   const ClientAppShell({super.key, required this.navigationShell});
 
   @override
-  Widget build(BuildContext context) => Scaffold(
+  Widget build(BuildContext context, WidgetRef ref) => Scaffold(
     body: navigationShell,
     bottomNavigationBar: AlfNavigationBar(
       index: navigationShell.currentIndex,
+      messageUnread: ref.watch(unreadTrainerMessagesProvider).value ?? false,
+      iconOnlyIndex: 2,
       onSelect: (index) => navigationShell.goBranch(
         index,
         initialLocation: index == navigationShell.currentIndex,
@@ -95,11 +99,15 @@ class AlfNavigationBar extends StatelessWidget {
   final int index;
   final ValueChanged<int> onSelect;
   final List<NavigationDestination> destinations;
+  final bool messageUnread;
+  final int? iconOnlyIndex;
   const AlfNavigationBar({
     super.key,
     required this.index,
     required this.onSelect,
     required this.destinations,
+    this.messageUnread = false,
+    this.iconOnlyIndex,
   });
 
   @override
@@ -145,31 +153,37 @@ class AlfNavigationBar extends StatelessWidget {
                                       : Colors.transparent,
                                   borderRadius: BorderRadius.circular(24),
                                 ),
-                                child: IconTheme(
-                                  data: IconThemeData(
-                                    size: 24,
-                                    color: i == index
-                                        ? AppColors.primaryRed
-                                        : AppColors.primaryText,
-                                  ),
-                                  child: i == index
-                                      ? destinations[i].selectedIcon ??
-                                            destinations[i].icon
-                                      : destinations[i].icon,
-                                ),
-                              ),
-                              const SizedBox(height: 5),
-                              Text(
-                                destinations[i].label,
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme.labelSmall
-                                    ?.copyWith(
-                                      fontSize: 11,
+                                child: Badge(
+                                  isLabelVisible:
+                                      messageUnread && i == iconOnlyIndex,
+                                  backgroundColor: AppColors.primaryRed,
+                                  child: IconTheme(
+                                    data: IconThemeData(
+                                      size: 22,
                                       color: i == index
                                           ? AppColors.primaryRed
                                           : AppColors.primaryText,
                                     ),
+                                    child: i == index
+                                        ? destinations[i].selectedIcon ??
+                                              destinations[i].icon
+                                        : destinations[i].icon,
+                                  ),
+                                ),
                               ),
+                              const SizedBox(height: 5),
+                              if (i != iconOnlyIndex)
+                                Text(
+                                  destinations[i].label,
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context).textTheme.labelSmall
+                                      ?.copyWith(
+                                        fontSize: 11,
+                                        color: i == index
+                                            ? AppColors.primaryRed
+                                            : AppColors.primaryText,
+                                      ),
+                                ),
                             ],
                           ),
                         ),

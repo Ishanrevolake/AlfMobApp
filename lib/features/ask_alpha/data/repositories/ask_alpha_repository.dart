@@ -115,6 +115,17 @@ class AskAlphaRepository {
     return response.map((data) => AskAlphaMessage.fromJson(data)).toList();
   }
 
+  Future<List<AskAlphaMessage>> getIncomingMessages(String userId) async {
+    final threads = await getThreads(userId);
+    if (threads.isEmpty) return [];
+    final response = await _supabase
+        .from('ask_alpha_messages')
+        .select()
+        .inFilter('thread_id', threads.map((thread) => thread.id).toList())
+        .neq('sender_role', 'client');
+    return response.map((data) => AskAlphaMessage.fromJson(data)).toList();
+  }
+
   Future<void> sendMessage(
     String threadId,
     String senderId,

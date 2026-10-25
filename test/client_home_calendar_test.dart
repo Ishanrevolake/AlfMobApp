@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:alfalee_app/features/dashboard/presentation/screens/client_calendar_screen.dart';
+import 'package:alfalee_app/features/dashboard/presentation/widgets/weekly_programme_strip.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:alfalee_app/app/theme/app_theme.dart';
@@ -15,12 +18,22 @@ class PreviewProfile extends ProfileController {
 
 void main() {
   testWidgets(
-    'home calendar opens a picker and updates summaries without navigation',
+    'home programme sits above the session and calendar opens the calendar screen',
     (tester) async {
       tester.view.physicalSize = const Size(900, 1600);
       tester.view.devicePixelRatio = 1;
       addTearDown(tester.view.resetPhysicalSize);
       addTearDown(tester.view.resetDevicePixelRatio);
+      final router = GoRouter(
+        routes: [
+          GoRoute(path: '/', builder: (_, __) => const ClientHomeScreen()),
+          GoRoute(
+            path: '/client/calendar',
+            builder: (_, __) => const ClientCalendarScreen(),
+          ),
+        ],
+      );
+      addTearDown(router.dispose);
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
@@ -28,45 +41,34 @@ void main() {
             mealControllerProvider.overrideWith(PreviewMeals.new),
             workoutControllerProvider.overrideWith(PreviewWorkout.new),
           ],
-          child: MaterialApp(
+          child: MaterialApp.router(
             theme: AppTheme.darkTheme,
-            home: const ClientHomeScreen(),
+            routerConfig: router,
           ),
         ),
       );
       await tester.pumpAndSettle();
       expect(find.text('ALFA LEE'), findsNothing);
       expect(find.text('Chicken and rice bowl'), findsOneWidget);
+      expect(
+        tester.getTopLeft(find.byType(WeeklyProgrammeStrip)).dy,
+        lessThan(tester.getTopLeft(find.byType(ElevatedButton).first).dy),
+      );
       await tester.tap(find.byTooltip('Calendar'));
       await tester.pumpAndSettle();
-      expect(find.byType(DatePickerDialog), findsOneWidget);
-      final now = DateTime.now();
-      final monday = DateTime(
-        now.year,
-        now.month,
-        now.day,
-      ).add(Duration(days: (DateTime.monday - now.weekday + 7) % 7));
+      expect(find.byType(ClientCalendarScreen), findsOneWidget);
+      expect(find.byType(CalendarDatePicker), findsOneWidget);
+      expect(find.text('Chicken and rice bowl'), findsOneWidget);
       final picker = tester.widget<CalendarDatePicker>(
         find.byType(CalendarDatePicker),
       );
-      picker.onDateChanged(monday);
-      await tester.pump();
-      await tester.tap(find.text('OK'));
+      picker.onDateChanged(DateTime(2026, 10, 2));
       await tester.pumpAndSettle();
-      expect(find.byType(DatePickerDialog), findsNothing);
+      expect(find.text('FRIDAY \u00b7 OCT 2'), findsOneWidget);
+      router.pop();
+      await tester.pumpAndSettle();
       expect(find.byType(ClientHomeScreen), findsOneWidget);
-      expect(find.text('Full body strength'), findsOneWidget);
-      if (monday.weekday != now.weekday) {
-        expect(find.textContaining('Dumbbell bench press'), findsOneWidget);
-        expect(find.text('No meals scheduled for this date.'), findsOneWidget);
-      }
-      await tester.tap(find.byTooltip('Calendar'));
-      await tester.pumpAndSettle();
-      await tester.tap(find.text('Cancel'));
-      await tester.pumpAndSettle();
-      expect(find.text('Full body strength'), findsOneWidget);
       expect(tester.takeException(), isNull);
     },
   );
 }
-
