@@ -469,6 +469,7 @@ class _TrainerPlanEditorState extends ConsumerState<TrainerPlanEditor> {
           PlanField('reps', 'Reps', required: true),
           PlanField('rest', 'Rest (e.g. 60 sec)'),
           PlanField('tempo', 'Tempo'),
+          PlanField('video_url', 'Trainer demo video (HTTPS URL)'),
           PlanField('notes', 'Coaching notes', lines: 3),
         ];
 

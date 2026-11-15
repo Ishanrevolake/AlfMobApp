@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'dart:convert';
+import 'package:file_picker/file_picker.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -124,6 +126,58 @@ class AskAlphaRepository {
         .inFilter('thread_id', threads.map((thread) => thread.id).toList())
         .neq('sender_role', 'client');
     return response.map((data) => AskAlphaMessage.fromJson(data)).toList();
+  }
+
+  Future<String> attachmentUrl(String path) =>
+      _supabase.storage.from('message-attachments').createSignedUrl(path, 3600);
+
+  Future<void> sendAttachment(
+    String threadId,
+    String userId,
+    PlatformFile file,
+    String media,
+  ) async {
+    if (file.size > 50 * 1024 * 1024) {
+      throw StateError('Choose a file smaller than 50 MB.');
+    }
+    final bytes = file.bytes;
+    if (bytes == null) throw StateError('Unable to read selected file.');
+    final ext = (file.extension ?? '').toLowerCase();
+    const mimeTypes = {
+      'jpg': 'image/jpeg',
+      'jpeg': 'image/jpeg',
+      'png': 'image/png',
+      'webp': 'image/webp',
+      'mp4': 'video/mp4',
+      'mov': 'video/quicktime',
+      'mp3': 'audio/mpeg',
+      'm4a': 'audio/mp4',
+      'wav': 'audio/wav',
+      'ogg': 'audio/ogg',
+    };
+    final mime = mimeTypes[ext];
+    if (mime == null || !mime.startsWith('$media/')) {
+      throw StateError(
+        'Unsupported file format. Use JPG, PNG, WebP, MP4, MOV, MP3, M4A, WAV or OGG.',
+      );
+    }
+    final path =
+        '$userId/$threadId/${DateTime.now().microsecondsSinceEpoch}.$ext';
+    await _supabase.storage
+        .from('message-attachments')
+        .uploadBinary(path, bytes, fileOptions: FileOptions(contentType: mime));
+    // Keep uploaded files when delivery is uncertain; never remove a possibly delivered attachment.
+    await sendMessage(
+      threadId,
+      userId,
+      jsonEncode({
+        'type': 'attachment',
+        'bucket': 'message-attachments',
+        'path': path,
+        'media': media,
+        'name': file.name,
+      }),
+    );
   }
 
   Future<void> sendMessage(

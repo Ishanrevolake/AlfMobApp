@@ -1,3 +1,5 @@
+import 'fake_daily_logs.dart';
+import 'package:alfalee_app/features/progress/data/daily_log_repository.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -102,6 +104,7 @@ void main() {
               ),
             ),
             workoutRepositoryProvider.overrideWithValue(repo),
+            dailyLogRepositoryProvider.overrideWithValue(MemoryDailyLogs()),
           ],
           child: MaterialApp(
             home: ClientPlanSync(
@@ -130,14 +133,10 @@ void main() {
       changes.add(1);
       await tester.pumpAndSettle();
       expect(find.text('Squat'), findsOneWidget);
-      tester.binding.handleAppLifecycleStateChanged(
-        AppLifecycleState.paused,
-      );
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
       await tester.pumpAndSettle();
       repo.saved = samplePlan('Bench press');
-      tester.binding.handleAppLifecycleStateChanged(
-        AppLifecycleState.resumed,
-      );
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
       await tester.pumpAndSettle();
       expect(find.text('Bench press'), findsOneWidget);
       await tester.pumpWidget(const SizedBox());

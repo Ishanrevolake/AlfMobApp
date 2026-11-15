@@ -1,3 +1,5 @@
+import 'fake_daily_logs.dart';
+import 'package:alfalee_app/features/progress/data/daily_log_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -106,6 +108,7 @@ void main() {
           await tester.pumpWidget(
             ProviderScope(
               overrides: [
+                dailyLogRepositoryProvider.overrideWithValue(MemoryDailyLogs()),
                 mealControllerProvider.overrideWith(PreviewMeals.new),
                 workoutControllerProvider.overrideWith(PreviewWorkout.new),
               ],
@@ -136,14 +139,11 @@ void main() {
               isTrue,
             );
           } else {
-            expect(find.byIcon(Icons.check), findsWidgets);
+            expect(find.text('Log your sets'), findsOneWidget);
           }
           expect(find.textContaining('PostgrestException'), findsNothing);
           expect(tester.takeException(), isNull);
           if (!meals) {
-            await tester.ensureVisible(find.byIcon(Icons.info_outline));
-            await tester.tap(find.byIcon(Icons.info_outline));
-            await tester.pumpAndSettle();
             expect(find.textContaining('90 seconds'), findsOneWidget);
             expect(tester.takeException(), isNull);
           }

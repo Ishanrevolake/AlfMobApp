@@ -1,4 +1,4 @@
-import '../widgets/exercise_details_sheet.dart';
+import 'client_exercise_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -7,8 +7,13 @@ import '../controllers/workout_controller.dart';
 
 class ClientWorkoutSessionScreen extends ConsumerWidget {
   final String dayOfWeek;
+  final bool showBack;
 
-  const ClientWorkoutSessionScreen({super.key, required this.dayOfWeek});
+  const ClientWorkoutSessionScreen({
+    super.key,
+    required this.dayOfWeek,
+    this.showBack = true,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -16,10 +21,13 @@ class ClientWorkoutSessionScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, size: 16),
-          onPressed: () => context.pop(),
-        ),
+        automaticallyImplyLeading: false,
+        leading: showBack
+            ? IconButton(
+                icon: const Icon(Icons.arrow_back_ios_new, size: 16),
+                onPressed: () => context.pop(),
+              )
+            : null,
         title: Text(
           dayOfWeek,
           style: Theme.of(
@@ -92,25 +100,24 @@ class ClientWorkoutSessionScreen extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              const Text('Check-offs are saved on this device for this week.'),
+              const Text(
+                'Tap an exercise to watch the demo and log your sets.',
+              ),
               const SizedBox(height: 24),
               _dayNotes(context, day.trainerNotes),
               ...List.generate(day.exercises.length, (exerciseIndex) {
                 final exercise = day.exercises[exerciseIndex];
                 return InkWell(
-                  onTap: () async {
-                    try {
-                      await ref
-                          .read(workoutControllerProvider.notifier)
-                          .toggleExerciseStatus(dayIndex, exerciseIndex);
-                    } catch (error) {
-                      if (context.mounted) {
-                        ScaffoldMessenger.of(
-                          context,
-                        ).showSnackBar(SnackBar(content: Text('$error')));
-                      }
-                    }
-                  },
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute<void>(
+                      builder: (_) => ClientExerciseScreen(
+                        plan: plan,
+                        dayIndex: dayIndex,
+                        exerciseIndex: exerciseIndex,
+                      ),
+                    ),
+                  ),
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 13),
                     decoration: const BoxDecoration(
@@ -178,7 +185,16 @@ class ClientWorkoutSessionScreen extends ConsumerWidget {
                             color: AppColors.faintText,
                           ),
                           onPressed: () {
-                            showExerciseDetails(context, exercise);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute<void>(
+                                builder: (_) => ClientExerciseScreen(
+                                  plan: plan,
+                                  dayIndex: dayIndex,
+                                  exerciseIndex: exerciseIndex,
+                                ),
+                              ),
+                            );
                           },
                         ),
                       ],

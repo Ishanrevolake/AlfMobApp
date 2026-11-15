@@ -1,4 +1,5 @@
 import 'trainer_plan_editor.dart';
+import 'trainer_daily_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -87,7 +88,7 @@ class _TrainerClientDetailScreenState
       }
       final data = snapshot.requireData;
       return DefaultTabController(
-        length: 4,
+        length: 5,
         child: Scaffold(
           appBar: AppBar(
             title: Text(data.client.fullName.toUpperCase()),
@@ -98,6 +99,7 @@ class _TrainerClientDetailScreenState
                 Tab(text: 'WORKOUT'),
                 Tab(text: 'MEALS'),
                 Tab(text: 'NOTES'),
+                Tab(text: 'ACTIVITY'),
               ],
             ),
           ),
@@ -107,6 +109,7 @@ class _TrainerClientDetailScreenState
               _workout(context, data),
               _meals(context, data),
               _notes(context, data),
+              TrainerDailyLogs(clientId: widget.clientId, plan: data.meals),
             ],
           ),
         ),

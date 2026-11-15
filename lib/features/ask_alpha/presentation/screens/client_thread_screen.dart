@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'message_attachment.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../app/theme/app_colors.dart';
@@ -19,6 +21,9 @@ class _ClientThreadScreenState extends ConsumerState<ClientThreadScreen> {
   final message = TextEditingController();
   bool sending = false;
   String? lastReadMessage;
+  late final Stream<List<AskAlphaMessage>> messages = ref
+      .read(askAlphaRepositoryProvider)
+      .messagesStream(widget.threadId);
   @override
   void dispose() {
     message.dispose();
@@ -27,7 +32,6 @@ class _ClientThreadScreenState extends ConsumerState<ClientThreadScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final repository = ref.watch(askAlphaRepositoryProvider);
     return Scaffold(
       appBar: AppBar(
         title: Text((widget.thread?.subject ?? 'MESSAGES').toUpperCase()),
@@ -36,7 +40,7 @@ class _ClientThreadScreenState extends ConsumerState<ClientThreadScreen> {
         children: [
           Expanded(
             child: StreamBuilder<List<AskAlphaMessage>>(
-              stream: repository.messagesStream(widget.threadId),
+              stream: messages,
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return Center(
@@ -103,7 +107,20 @@ class _ClientThreadScreenState extends ConsumerState<ClientThreadScreen> {
                           ),
                           borderRadius: BorderRadius.circular(14),
                         ),
-                        child: Text(item.content),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            MessageAttachment(body: item.content),
+                            const SizedBox(height: 6),
+                            Text(
+                              DateFormat(
+                                'EEE, d MMM yyyy ? HH:mm',
+                              ).format(item.createdAt.toLocal()),
+                              style: Theme.of(context).textTheme.labelSmall,
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   },
@@ -117,6 +134,42 @@ class _ClientThreadScreenState extends ConsumerState<ClientThreadScreen> {
               padding: const EdgeInsets.fromLTRB(14, 8, 14, 12),
               child: Row(
                 children: [
+                  IconButton(
+                    tooltip: 'Attach image, video or audio',
+                    icon: const Icon(Icons.attach_file),
+                    onPressed: sending
+                        ? null
+                        : () => pickMessageAttachment(context, (
+                            file,
+                            media,
+                          ) async {
+                            final user = ref.read(currentUserProvider);
+                            if (user == null) return;
+                            setState(() => sending = true);
+                            try {
+                              await ref
+                                  .read(askAlphaRepositoryProvider)
+                                  .sendAttachment(
+                                    widget.threadId,
+                                    user.id,
+                                    file,
+                                    media,
+                                  );
+                            } catch (e) {
+                              if (mounted && context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      'Unable to send attachment: $e',
+                                    ),
+                                  ),
+                                );
+                              }
+                            } finally {
+                              if (mounted) setState(() => sending = false);
+                            }
+                          }),
+                  ),
                   Expanded(
                     child: TextField(
                       controller: message,

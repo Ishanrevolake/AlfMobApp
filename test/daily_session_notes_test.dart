@@ -121,7 +121,7 @@ void main() {
     );
   }
 
-  testWidgets('Programme lists individual day notes', (tester) async {
+  testWidgets('Programme shows only the current assigned day', (tester) async {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [workoutControllerProvider.overrideWith(NotesWorkout.new)],
@@ -132,8 +132,15 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    expect(find.text('Start light and focus on technique.'), findsOneWidget);
-    expect(find.text('Take a gentle walk.'), findsOneWidget);
+    final weekday = DateTime.now().weekday;
+    expect(
+      find.text('Start light and focus on technique.'),
+      weekday == 1 ? findsOneWidget : findsNothing,
+    );
+    expect(
+      find.text('Take a gentle walk.'),
+      weekday == 2 ? findsOneWidget : findsNothing,
+    );
   });
 
   testWidgets('Trainer saves day notes without changing the other day', (

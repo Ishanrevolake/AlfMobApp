@@ -1,3 +1,5 @@
+import '../../../../shared/plan_days.dart';
+import '../../../progress/data/daily_log_repository.dart';
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/models/workout_models.dart';
@@ -36,6 +38,22 @@ class WorkoutController extends AsyncNotifier<WorkoutPlan?> {
         for (final item in day.exercises)
           _progressKey(progress, plan, day, item),
     ]);
+    final cloud = <String, Map<String, dynamic>>{};
+    for (final day in plan.days) {
+      final index = weekDays.indexWhere(
+        (d) => shortPlanDay(d) == shortPlanDay(day.dayOfWeek),
+      );
+      final date = DateTime(
+        current.year,
+        current.month,
+        current.day - current.weekday + 1 + (index < 0 ? 0 : index),
+      );
+      cloud.addAll(
+        await ref
+            .watch(dailyLogRepositoryProvider)
+            .read(_clientId, date, 'exercise'),
+      );
+    }
     return plan.copyWith(
       days: [
         for (final day in plan.days)
@@ -44,7 +62,10 @@ class WorkoutController extends AsyncNotifier<WorkoutPlan?> {
               for (final item in day.exercises)
                 item.copyWith(
                   done:
-                      values[_progressKey(progress, plan, day, item)] ?? false,
+                      cloud['${logDate(plan.startDate)}:${day.dayOfWeek}:${item.source['id'] ?? day.exercises.indexOf(item)}']?['complete']
+                          as bool? ??
+                      values[_progressKey(progress, plan, day, item)] ??
+                      false,
                 ),
             ],
           ),

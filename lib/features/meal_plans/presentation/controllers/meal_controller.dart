@@ -1,3 +1,5 @@
+import '../../../../shared/plan_days.dart';
+import '../../../progress/data/daily_log_repository.dart';
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/models/meal_models.dart';
@@ -35,6 +37,13 @@ class MealController extends AsyncNotifier<ClientMealPlan?> {
       for (final day in plan.days)
         for (final item in day.meals) _progressKey(progress, plan, day, item),
     ]);
+    final remote = ref.watch(dailyLogRepositoryProvider);
+    final cloud = <String, Map<String, dynamic>>{};
+    for (final day in plan.days) {
+      cloud.addAll(
+        await remote.read(_clientId, _dateForDay(current, day), 'meal'),
+      );
+    }
     return plan.copyWith(
       days: [
         for (final day in plan.days)
@@ -43,13 +52,29 @@ class MealController extends AsyncNotifier<ClientMealPlan?> {
               for (final item in day.meals)
                 item.copyWith(
                   eaten:
-                      values[_progressKey(progress, plan, day, item)] ?? false,
+                      cloud[_logKey(plan, day, item)]?['eaten'] as bool? ??
+                      values[_progressKey(progress, plan, day, item)] ??
+                      false,
                 ),
             ],
           ),
       ],
     );
   }
+
+  DateTime _dateForDay(DateTime now, MealPlanDay day) {
+    final index = weekDays.indexWhere(
+      (d) => shortPlanDay(d) == shortPlanDay(day.dayOfWeek),
+    );
+    return DateTime(
+      now.year,
+      now.month,
+      now.day - now.weekday + 1 + (index < 0 ? 0 : index),
+    );
+  }
+
+  String _logKey(ClientMealPlan plan, MealPlanDay day, AssignedMeal item) =>
+      '${logDate(plan.startDate)}:${day.dayOfWeek}:${item.source['id'] ?? item.id}';
 
   String _progressKey(
     ClientProgressRepository progress,
@@ -97,6 +122,27 @@ class MealController extends AsyncNotifier<ClientMealPlan?> {
         _progressKey(progress, currentState, day, meal),
         !meal.eaten,
       );
+      try {
+        await ref.read(dailyLogRepositoryProvider).save(
+          currentState.clientId,
+          _dateForDay(progress.now(), day),
+          'meal',
+          _logKey(currentState, day, meal),
+          {
+            'name': meal.name,
+            'eaten': !meal.eaten,
+            'kcal': meal.kcal,
+            'protein': meal.protein,
+            'planned': true,
+          },
+        );
+      } catch (_) {
+        await progress.write(
+          _progressKey(progress, currentState, day, meal),
+          meal.eaten,
+        );
+        rethrow;
+      }
     } catch (e) {
       // Revert if failed
       if (ref.mounted && identical(state.value, updatedPlan)) {

@@ -1,3 +1,5 @@
+import 'fake_daily_logs.dart';
+import 'package:alfalee_app/features/progress/data/daily_log_repository.dart';
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -17,6 +19,7 @@ final _supabase = SupabaseClient(
   'test',
   authOptions: const AuthClientOptions(autoRefreshToken: false),
 );
+final _cloudLogs = MemoryDailyLogs();
 final _start = DateTime(2026, 9, 14);
 
 class ClientMeals extends MealRepository {
@@ -126,6 +129,7 @@ ProviderContainer clientContainer(
         workouts ?? ClientWorkouts(id),
       ),
       clientProgressRepositoryProvider.overrideWithValue(progress),
+      dailyLogRepositoryProvider.overrideWithValue(_cloudLogs),
     ],
   );
   addTearDown(container.dispose);
@@ -134,7 +138,10 @@ ProviderContainer clientContainer(
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  setUp(() => SharedPreferences.setMockInitialValues({}));
+  setUp(() {
+    SharedPreferences.setMockInitialValues({});
+    _cloudLogs.values.clear();
+  });
   test(
     'Meal and workout check-offs persist without writing trainer plans',
     () async {

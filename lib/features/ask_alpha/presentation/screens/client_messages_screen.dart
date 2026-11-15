@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'message_attachment.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../shared/widgets/alf_widgets.dart';
@@ -84,6 +85,60 @@ class _MessagesState extends ConsumerState<ClientMessagesScreen> {
               padding: const EdgeInsets.all(16),
               child: Row(
                 children: [
+                  IconButton(
+                    tooltip: 'Attach image, video or audio',
+                    icon: const Icon(Icons.attach_file),
+                    onPressed: sending
+                        ? null
+                        : () => pickMessageAttachment(context, (
+                            file,
+                            media,
+                          ) async {
+                            final user = ref.read(currentUserProvider);
+                            if (user == null) return;
+                            setState(() => sending = true);
+                            try {
+                              final repository = ref.read(
+                                askAlphaRepositoryProvider,
+                              );
+                              final threads = await ref.read(
+                                clientMessagesProvider.future,
+                              );
+                              final thread =
+                                  threads
+                                      .where((t) => t.orderId.isEmpty)
+                                      .firstOrNull ??
+                                  await repository.createClientConversation(
+                                    user.id,
+                                  );
+                              await repository.sendAttachment(
+                                thread.id,
+                                user.id,
+                                file,
+                                media,
+                              );
+                              ref.invalidate(clientMessagesProvider);
+                              if (mounted && context.mounted) {
+                                context.push(
+                                  '/client/messages/thread/${thread.id}',
+                                  extra: thread,
+                                );
+                              }
+                            } catch (e) {
+                              if (mounted && context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      'Unable to send attachment: $e',
+                                    ),
+                                  ),
+                                );
+                              }
+                            } finally {
+                              if (mounted) setState(() => sending = false);
+                            }
+                          }),
+                  ),
                   Expanded(
                     child: TextField(
                       controller: message,
